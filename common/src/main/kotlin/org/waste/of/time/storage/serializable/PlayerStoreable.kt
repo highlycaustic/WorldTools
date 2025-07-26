@@ -1,14 +1,16 @@
 package org.waste.of.time.storage.serializable
 
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtIo
+import net.minecraft.storage.NbtWriteView
 import net.minecraft.text.MutableText
+import net.minecraft.util.ErrorReporter
 import net.minecraft.util.Util
 import net.minecraft.util.WorldSavePath
 import net.minecraft.world.level.storage.LevelStorage.Session
 import org.waste.of.time.Utils.asString
 import org.waste.of.time.WorldTools
+import org.waste.of.time.WorldTools.LOG2
 import org.waste.of.time.WorldTools.config
 import org.waste.of.time.manager.MessageManager.translateHighlight
 import org.waste.of.time.manager.StatisticManager
@@ -17,8 +19,6 @@ import org.waste.of.time.storage.CustomRegionBasedStorage
 import org.waste.of.time.storage.Storeable
 import org.waste.of.time.storage.cache.HotCache
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Path
 
 data class PlayerStoreable(
     val player: PlayerEntity
@@ -61,11 +61,12 @@ data class PlayerStoreable(
             playerDataDir.mkdirs()
 
             val newPlayerFile = File.createTempFile(player.uuidAsString + "-", ".dat", playerDataDir).toPath()
-            NbtIo.writeCompressed(player.writeNbt(NbtCompound()).apply {
+            NbtIo.writeCompressed(NbtWriteView.create(ErrorReporter.Logging(LOG2).makeChild(player.errorReporterContext)).apply {
+                player.writeData(this)
                 if (config.entity.censor.lastDeathLocation) {
                     remove("LastDeathLocation")
                 }
-            }, newPlayerFile)
+            }.nbt, newPlayerFile)
             val currentFile = File(playerDataDir, player.uuidAsString + ".dat").toPath()
             val backupFile = File(playerDataDir, player.uuidAsString + ".dat_old").toPath()
             Util.backupAndReplace(currentFile, newPlayerFile, backupFile)

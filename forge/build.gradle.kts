@@ -16,7 +16,7 @@ loom {
 
 repositories {
     maven("https://thedarkcolour.github.io/KotlinForForge/") {
-        name = "KotlinForForge"
+        name = "Kotlin For Forge"
     }
     maven("https://cursemaven.com") {
         name = "Curse"
@@ -31,7 +31,7 @@ val common: Configuration by configurations.creating {
 
 dependencies {
     forge("net.minecraftforge:forge:${project.properties["forge_version"]!!}")
-    implementation("thedarkcolour:kotlinforforge:${project.properties["kotlin_forge_version"]!!}")
+    implementation("thedarkcolour:kotlinforforge-neoforge:${project.properties["kotlin_forge_version"]!!}")
     common(project(":common", configuration = "namedElements")) { isTransitive = false }
     shadowCommon(project(path = ":common", configuration = "transformProductionForge")) { isTransitive = false }
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${project.properties["mixinextras_version"]}")!!)
