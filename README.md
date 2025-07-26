@@ -1,3 +1,8 @@
+Mod updated to 1.21.7. May contain bugs. Use at your own risk.<br>
+Мод обновлен до 1.21.7, может содержать баги, используйте на свой страх и риск.
+
+Привет crontab
+
 <p align="center">
   <img src="https://github.com/Avanatiker/WorldTools/blob/master/common/src/main/resources/assets/worldtools/WorldTools.png?raw=true" alt="" width="256" height="256" style="display: block; margin-left: auto; margin-right: auto;">
 </p>
